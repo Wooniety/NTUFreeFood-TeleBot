@@ -59,7 +59,7 @@ async def store_additional_info(update: Update, context: ContextTypes.DEFAULT_TY
 
 async def handle_skip_additional_info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     query = update.callback_query
-    query.answer()
+    await query.answer()
 
     context.user_data["additional_info"] = ""
     await query.message.reply_text("Please send a photo of the food.")
@@ -76,10 +76,12 @@ async def get_photo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 def generate_food_announcement(user_data):
     text = (
-        f"Location: {user_data.get('location')}\n"
-        f"Clear Time: {user_data.get('clear_time')}\n"
-        f"Additional Info: {user_data.get('additional_info', '')}\n"
+        f"📍 Location: {user_data.get('location')}\n"
+        f"⏰ Clear Time: {user_data.get('clear_time')}\n"
     )
+    add_info = user_data.get("additional_info", "").strip()
+    if add_info != "":
+        text = text + f"ℹ️ Additional Info: {user_data.get('additional_info', '')}\n"
 
     return text
 
