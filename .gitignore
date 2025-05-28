@@ -1,0 +1,6 @@
+# venv stuff
+.env
+venv/
+
+# config
+env
