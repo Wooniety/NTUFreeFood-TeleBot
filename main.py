@@ -27,7 +27,6 @@ EDIT_CHOICE, EDIT_LOCATION, EDIT_CLEARTIME, EDIT_ADDITIONALINFO, EDIT_PHOTO = ra
 
 async def set_commands(app) -> None:
     commands = [
-        BotCommand("start", "Start the bot"),
         BotCommand("submit", "Submit a free food sighting")
     ]
     await app.bot.set_my_commands(commands)
@@ -119,7 +118,7 @@ async def handle_submit(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
 
 async def handle_edit(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     query = update.callback_query
-    query.answer()
+    await query.answer()
 
     keyboard = [
         [InlineKeyboardButton("Location", callback_data="edit_location")],
@@ -129,7 +128,9 @@ async def handle_edit(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
         [InlineKeyboardButton("Done Editing", callback_data="done_editing")]
     ]
 
-    await query.edit_message_text(
+    await query.answer()
+
+    await query.message.reply_text(
         text="What would you like to edit?",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
